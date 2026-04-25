@@ -32,8 +32,8 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
         self.setup_duty_students()
 
         # 设置提醒定时器
-        # self.setup_reminder()
-        self.remind()
+        self.setup_reminder()
+        # self.remind()
 
 
     def setup_reminder(self) -> None:
