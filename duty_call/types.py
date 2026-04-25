@@ -1,0 +1,1 @@
+DutyStudents = dict[str, list[str]]

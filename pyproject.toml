@@ -1,0 +1,20 @@
+[project]
+name = "duty-call"
+version = "0.1.0"
+description = "该去值日了，同学"
+authors = [
+    {name = "XiaoDeng3386",email = "1744793737@qq.com"}
+]
+license = {text = "GPL-3"}
+readme = "README.md"
+requires-python = ">=3.13,<3.15"
+dependencies = [
+    "pyside6 (>=6.11.0,<7.0.0)",
+    "pydantic (>=2.13.3,<3.0.0)",
+]
+
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

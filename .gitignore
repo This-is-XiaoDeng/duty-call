@@ -1,0 +1,7 @@
+__pycache__/
+poetry.lock
+poetry.toml
+.vscode/
+
+tts.vbs
+config.json
