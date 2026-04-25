@@ -28,7 +28,7 @@
 
 ```
 DutyCall - A program to read duty schedule aloud.
-Copyright (C) 2026  SunaookamiNya
+Copyright (C) 2026  SunaōkamiNya
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
