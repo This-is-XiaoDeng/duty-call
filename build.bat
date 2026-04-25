@@ -1,0 +1,1 @@
+poetry run python -m nuitka --standalone --enable-plugin=pyside6 --output-dir=build --assume-yes-for-downloads --disable-console launcher.py
