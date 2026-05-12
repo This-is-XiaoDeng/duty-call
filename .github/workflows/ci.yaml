@@ -1,0 +1,41 @@
+name: CI Build
+
+on:
+  push:
+    branches: ["*"]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Build with Nuitka
+        run: |
+          poetry run python -m nuitka --standalone --enable-plugin=pyside6 --output-dir=build --assume-yes-for-downloads --windows-console-mode=disable launcher.py
+
+      - name: Package build artifacts
+        run: Compress-Archive -Path build\launcher.dist\* -DestinationPath duty-call-windows.zip
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: duty-call-windows
+          path: duty-call-windows.zip
