@@ -51,7 +51,7 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
         separator = " " * self.config.reminder.tts_pause_spaces
         names_text = separator.join(self.get_duty_student_list())
         threading.Thread(target=tts, args=(self.config.reminder.text.format(names_text), )).start()
-        QTimer.singleShot(self.config.reminder.alive_time * 1000, self.close)
+        QTimer.singleShot(self.config.reminder.alive_time * 1000, self.hide)
 
     def get_duty_student_list(self) -> list[str]:
         students = []
