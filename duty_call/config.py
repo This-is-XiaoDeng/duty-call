@@ -5,6 +5,8 @@ class ReminderSettings(BaseModel):
     alive_time: int = 45
     times: list[tuple[int, int]]
     text: str = "今日值日的同学有: {}"
+    tts_pause_spaces: int = 3  # TTS 人名间的空格数量，越多停顿越长，设为 1 恢复默认
+    volume: int = 60  # TTS 前设置系统音量（0-100），设为 0 则不修改音量
 
 class Config(BaseModel):
     schedule: dict[str, list[tuple[str, str]]]
