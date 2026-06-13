@@ -39,6 +39,8 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
     def setup_reminder(self) -> None:
         """设置提醒定时器，使用singleShot设置一次性定时器"""
         dt = datetime.now()
+        if not self.config.reminder.times:
+            self.remind()
         for time in self.config.reminder.times:
             t = datetime.now().replace(hour=time[0], minute=time[1])
             if t > dt:
