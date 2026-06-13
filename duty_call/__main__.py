@@ -51,8 +51,8 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
     def remind(self) -> None:
         self.showMaximized()
         names = self.get_duty_student_list()
-        parts = [self.config.reminder.text.format(names[0])] + names[1:] if names else [self.config.reminder.text.format("")]
-        threading.Thread(target=tts, args=(parts, self.config.reminder.volume, self.config.reminder.tts_pause_ms)).start()
+        text = self.config.reminder.text.format(self.config.reminder.name_separator.join(names))
+        threading.Thread(target=tts, args=(text, self.config.reminder.volume)).start()
         QTimer.singleShot(self.config.reminder.alive_time * 1000, self.hide)
 
     def get_duty_student_list(self) -> list[str]:
