@@ -3,9 +3,10 @@ import sys
 import threading
 
 from PySide6.QtCore import QSize, Qt
-from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox
+from PySide6.QtWidgets import QMainWindow, QApplication, QMessageBox, QSizePolicy
 from PySide6.QtCore import QTimer, QThread
 
+from duty_call.table import build_students_table
 from duty_call.tts import tts
 from duty_call.types import DutyStudents
 
@@ -18,6 +19,11 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
     def __init__(self) -> None:
         super().__init__()
         self.setupUi(self)
+        # 不让表格的 sizeHint 反过来把窗口最小尺寸撑到屏幕之外
+        self.students.setMinimumSize(0, 0)
+        self.students.setSizePolicy(
+            QSizePolicy.Policy.Ignored, QSizePolicy.Policy.Preferred
+        )
         self.datetime_update_timer = QTimer(self)
         self.datetime_update_timer.timeout.connect(self.update_datetime)
         self.datetime_update_timer.setInterval(1000)
@@ -64,17 +70,31 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
 
 
     def setup_duty_students(self) -> None:
-        text ='<table style="text-align: center; width:100%; background:#fff; border-collapse:separate; border-spacing:0; border-radius:18px; overflow:hidden; box-shadow:0 2px 8px rgba(0,0,0,0.03); font-size:30px">'
-        for work, students in self.duty_students.items():
-            text += f'<tr><td style="padding:14px 18px; border-bottom:1px solid #eef2f6">{work}</td>'
-            for student in students:
-                text += f'<td style="padding:14px 18px; border-bottom:1px solid #eef2f6">{student}</td>'
-            text += "</tr>"
-        text += "</table>"
-        self.students.setText(text)
-        
+        screen = self.screen() or QApplication.primaryScreen()
+        geometry = screen.availableGeometry()
+        margins = self.verticalLayout_2.contentsMargins()
 
-    
+        # 标题、时间以及三个最小高度 40px 的间隔器都会占用高度，
+        # 再为布局边距和间距预留 80px，避免表格把窗口撑出屏幕。
+        reserved_height = (
+            self.label.sizeHint().height()
+            + self.dt.sizeHint().height()
+            + 3 * 40
+            + margins.top()
+            + margins.bottom()
+            + 80
+        )
+        self.students.setText(
+            build_students_table(
+                self.duty_students,
+                max_width=max(
+                    1,
+                    geometry.width() - margins.left() - margins.right() - 16,
+                ),
+                max_height=max(1, geometry.height() - reserved_height),
+            )
+        )
+
     def get_duty_students(self) -> DutyStudents:
         dt = datetime.now()
         weekday = dt.weekday()

@@ -33,6 +33,8 @@ def set_system_volume(percent: int) -> None:
 
         # 设置主音量（0.0 - 1.0）
         volume.SetMasterVolumeLevelScalar(percent / 100, None)
+        # 显式解除静音，否则设备处于静音状态时只调音量依然没有声音
+        volume.SetMute(0, None)
         print(f"系统音量已设置为 {percent}%")
     except Exception as e:
         print(f"设置音量失败: {e}")
