@@ -74,8 +74,9 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
         geometry = screen.availableGeometry()
         margins = self.verticalLayout_2.contentsMargins()
 
-        # 标题、时间以及三个最小高度 40px 的间隔器都会占用高度，
-        # 再为布局边距和间距预留 80px，避免表格把窗口撑出屏幕。
+        # 标题、时间以及三个最小高度 40px 的间隔器都会占用高度；
+        # 再预留 80px 给布局边距/间距、48px 给最大化后的标题栏和边框，
+        # 避免表格把窗口撑出屏幕。
         reserved_height = (
             self.label.sizeHint().height()
             + self.dt.sizeHint().height()
@@ -83,6 +84,7 @@ class DutyCallWindow(QMainWindow, Ui_MainWindow):
             + margins.top()
             + margins.bottom()
             + 80
+            + 48
         )
         self.students.setText(
             build_students_table(
